@@ -30,7 +30,6 @@ RUN install_packages \
 
 
 RUN mkdir /var/run/sshd \
-    && echo 'root:mypassword' | chpasswd \
     && sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd \
     && mkdir /root/.ssh/ \
     && echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHnofKbghuYBeVxHxJiOfBsiSAiVMyRvlorSncmKyS8x shermanm@msh-laptop" > /root/.ssh/authorized_keys

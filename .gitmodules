@@ -1,3 +1,6 @@
 [submodule "userland"]
-	path = userland
+	path = sources/userland
 	url = https://github.com/msherman64/userland/
+[submodule "donkeycar"]
+	path = sources/donkeycar
+	url = https://github.com/autorope/donkeycar

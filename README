@@ -1,6 +1,29 @@
 # Overview
 
+This repo provides containers, configuration, build scripts, and examples to run
+"Doneycar-like" workflows on a variety of targets.
+
+The usual workflow consists of:
+1. Drive a small RC car around remotely, while recording camera input and steering commands.
+2. Use the data from step 1 to train a small deep learning model
+3. Use the ML model to drive the car autonomously
+
+
 
 build containers by running `docker buildx bake`
 
 
+# Car backends
+
+## Donkeycar
+
+## Foocars
+
+
+# Build Targets
+
+## CHI@Edge
+
+## Balena
+
+## Local use with Docker

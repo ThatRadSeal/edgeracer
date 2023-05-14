@@ -1,0 +1,13 @@
+---
+version: "2"
+services:
+  donkeycar:
+    build: .
+    devices:
+      - "/dev/video0:/dev/video0"     # picamera1
+      - "/dev/vchiq:/dev/vchiq"       # picamera1
+      - "/dev/vcsm-cma:/dev/vcsm-cma" # picamera1
+      - "/dev/i2c-1:/dev/i2c-1"       # I2C for PCA9685
+    ports:
+      - "8887:8887"
+

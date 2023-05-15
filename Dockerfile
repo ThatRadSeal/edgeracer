@@ -35,17 +35,48 @@ ENV PATH="/venv/bin:$PATH"
 RUN python -m venv /venv \
     && /venv/bin/pip install wheel
 COPY sources/donkeycar /donkeycar
-WORKDIR /donkeycar
 
-RUN /venv/bin/pip install --no-cache-dir \
-    tensorflow==2.12 \
-    -e .[pi]
+WORKDIR /donkeycar
+RUN /venv/bin/pip wheel --no-cache-dir \
+    -w /wheels/ \
+    -e /donkeycar/.[pi]
+
+FROM balenalib/raspberrypi4-64-ubuntu-python:${RUN_TAG} as carrunner
+
+# Install runtime dependencies
+RUN pip install --no-cache-dir \
+    tensorflow==2.12
 
 # ensure we have userland
 COPY --from=userland /opt/vc/ /usr/
 
-RUN donkey createcar --path /root/mycar
+# install from wheels to minimize size
+COPY --from=donkeycar-build /wheels /tmp/wheels
+RUN pip install --no-cache-dir \
+    --no-index \
+    --find-links /tmp/wheels \
+    donkeycar[pi] \
+    && rm -rf /tmp/wheels
+
+# test to ensure that donkey binary starts
+RUN donkey createcar --path /tmp/mycar
+
+# run openssh server for interactive use
+RUN install_packages openssh-server
+RUN mkdir /var/run/sshd \
+    && sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd \
+    && mkdir /root/.ssh/ \
+    && echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHnofKbghuYBeVxHxJiOfBsiSAiVMyRvlorSncmKyS8x shermanm@msh-laptop" > /root/.ssh/authorized_keys
+EXPOSE 22
+EXPOSE 8887
+
+# Copy prebuilt car into container
 COPY cars/chiaracer /root/chiaracer
 WORKDIR /root/chiaracer
-CMD python manage.py drive
+
+# Start car in webui control mode
+# CMD python manage.py drive
+# CMD "/bin/bash"
+CMD ["/usr/sbin/sshd", "-D"]
+
 

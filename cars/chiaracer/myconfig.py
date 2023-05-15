@@ -26,7 +26,7 @@ IMAGE_H = 480
 # IMAGE_DEPTH = 3         # default RGB=3, make 1 for mono
 # CAMERA_FRAMERATE = DRIVE_LOOP_HZ
 CAMERA_VFLIP = True
-# CAMERA_HFLIP = False
+CAMERA_HFLIP = True
 # CAMERA_INDEX = 0  # used for 'WEBCAM' and 'CVCAM' when there is more than one camera connected
 # # For CSIC camera - If the camera is mounted in a rotated position, changing the below parameter will correct the output frame orientation
 # CSIC_CAM_GSTREAMER_FLIP_PARM = 0 # (0 => none , 4 => Flip horizontally, 6 => Flip vertically)
@@ -82,11 +82,11 @@ PWM_STEERING_THROTTLE = {
     "PWM_THROTTLE_PIN": "PCA9685.1:40.1",   # PWM output pin for ESC
     "PWM_THROTTLE_SCALE": 1.0,              # used to compensate for PWM frequence differences from 60hz; NOT for increasing/limiting speed
     "PWM_THROTTLE_INVERTED": False,         # True if hardware requires an inverted PWM pulse
-    "STEERING_LEFT_PWM": 490,               #pwm value for full left steering
-    "STEERING_RIGHT_PWM": 330,              #pwm value for full right steering
-    "THROTTLE_FORWARD_PWM": 400,            #pwm value for max forward throttle
+    "STEERING_LEFT_PWM": 540,               #pwm value for full left steering
+    "STEERING_RIGHT_PWM": 260,              #pwm value for full right steering
+    "THROTTLE_FORWARD_PWM": 465,            #pwm value for max forward throttle
     "THROTTLE_STOPPED_PWM": 370,            #pwm value for no movement
-    "THROTTLE_REVERSE_PWM": 330,            #pwm value for max reverse throttle
+    "THROTTLE_REVERSE_PWM": 280,            #pwm value for max reverse throttle
 }
 
 # #ODOMETRY

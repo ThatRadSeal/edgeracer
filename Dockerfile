@@ -45,7 +45,8 @@ FROM balenalib/raspberrypi4-64-ubuntu-python:${RUN_TAG} as carrunner
 
 # Install runtime dependencies
 RUN pip install --no-cache-dir \
-    tensorflow==2.12
+    tensorflow==2.12 \
+    opencv-python-headless
 
 # ensure we have userland
 COPY --from=userland /opt/vc/ /usr/

@@ -68,6 +68,7 @@ RUN mkdir /var/run/sshd \
     && mkdir /root/.ssh/ \
     && echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHnofKbghuYBeVxHxJiOfBsiSAiVMyRvlorSncmKyS8x shermanm@msh-laptop" > /root/.ssh/authorized_keys
 EXPOSE 22
+EXPOSE 8886
 EXPOSE 8887
 
 # Copy prebuilt car into container

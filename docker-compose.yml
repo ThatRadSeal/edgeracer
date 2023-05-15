@@ -13,6 +13,17 @@ services:
       - "22:22"
     volumes:
       - chiaracer_data:/root/chiaracer/data
+  tailscaled:
+    image: tailscale/tailscale:v1.40.1
+    network_mode: "host"
+    devices:
+      - "/dev/net/tun:/dev/net/tun"
+    cap_add:
+    - NET_ADMIN
+    - NET_RAW
+    labels:
+      io.balena.features.kernel-modules: '1'
+
 volumes:
   chiaracer_data: {}
 

@@ -47,6 +47,5 @@ COPY --from=userland /opt/vc/ /usr/
 RUN donkey createcar --path /root/mycar
 COPY cars/chiaracer /root/chiaracer
 WORKDIR /root/chiaracer
-# CMD python manage.py drive
-CMD /bin/bash
+CMD python manage.py drive
 

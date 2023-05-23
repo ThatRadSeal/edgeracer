@@ -41,6 +41,8 @@ RUN /venv/bin/pip wheel --no-cache-dir \
     -w /wheels/ \
     -e /donkeycar/.[pi]
 
+ARG CAR_DIR=/root/car
+
 FROM balenalib/raspberrypi4-64-ubuntu-python:${RUN_TAG} as carrunner
 
 # Install runtime dependencies
@@ -73,8 +75,9 @@ EXPOSE 8886
 EXPOSE 8887
 
 # Copy prebuilt car into container
-COPY cars/chiaracer /root/chiaracer
-WORKDIR /root/chiaracer
+COPY cars/chiaracer/myconfig.py /root/default_config.py
+RUN mkdir ${CAR_DIR}
+WORKDIR ${CAR_DIR}
 
 # Start car in webui control mode
 # CMD python manage.py drive

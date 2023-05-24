@@ -116,7 +116,7 @@ PWM_STEERING_THROTTLE = {
 # # python manage.py train and drive commands.
 # # tensorflow models: (linear|categorical|tflite_linear|tensorrt_linear)
 # # pytorch models: (resnet18)
-# DEFAULT_MODEL_TYPE = 'linear'
+DEFAULT_MODEL_TYPE = 'tflite_linear'
 # BATCH_SIZE = 128                #how many records to use when doing one pass of gradient decent. Use a smaller number if your gpu is running out of memory.
 # TRAIN_TEST_SPLIT = 0.8          #what percent of records to use for training. the remaining used for validation.
 # MAX_EPOCHS = 100                #how many times to visit all records of your data
@@ -130,8 +130,8 @@ PWM_STEERING_THROTTLE = {
 # LEARNING_RATE = 0.001           #only used when OPTIMIZER specified
 # LEARNING_RATE_DECAY = 0.0       #only used when OPTIMIZER specified
 # SEND_BEST_MODEL_TO_PI = False   #change to true to automatically send best model during training
-# CREATE_TF_LITE = True           # automatically create tflite model in training
-# CREATE_TENSOR_RT = False        # automatically create tensorrt model in training
+CREATE_TF_LITE = True           # automatically create tflite model in training
+CREATE_TENSOR_RT = False        # automatically create tensorrt model in training
 #
 # PRUNE_CNN = False               #This will remove weights from your model. The primary goal is to increase performance.
 # PRUNE_PERCENT_TARGET = 75       # The desired percentage of pruning.

@@ -92,8 +92,8 @@ RUN install_packages \
 RUN mkdir /var/run/sshd \
     && sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd \
     && mkdir /root/.ssh/ \
-    && echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHnofKbghuYBeVxHxJiOfBsiSAiVMyRvlorSncmKyS8x shermanm@msh-laptop" > /root/.ssh/authorized_keys \
-    && echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOBdIqKAcE2TrqWuDl1ThS5AW/cqmrIjBUk3gTDpGjH0 cc@mike-edgeracer-merif" > /root/.ssh/authorized_keys
+    && echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHnofKbghuYBeVxHxJiOfBsiSAiVMyRvlorSncmKyS8x shermanm@msh-laptop" >> /root/.ssh/authorized_keys \
+    && echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOBdIqKAcE2TrqWuDl1ThS5AW/cqmrIjBUk3gTDpGjH0 cc@mike-edgeracer-merif" >> /root/.ssh/authorized_keys
 
 EXPOSE 22
 

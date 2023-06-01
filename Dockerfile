@@ -45,7 +45,8 @@ FROM balenalib/raspberrypi4-64-ubuntu-python:${RUN_TAG} as carrunner
 
 # Runtime Deps
 RUN install_packages \
-    libglib2.0-0
+    libglib2.0-0 \
+    libgl1
 
 # Install runtime dependencies
 RUN pip install --no-cache-dir \

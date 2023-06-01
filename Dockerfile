@@ -50,6 +50,7 @@ RUN install_packages \
 # Install runtime dependencies
 RUN pip install --no-cache-dir \
     tflite-runtime==2.12 \
+    tensorflow==2.12 \
     opencv-python-headless
 
 # Test OpenCV

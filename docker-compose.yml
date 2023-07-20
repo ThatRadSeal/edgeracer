@@ -8,12 +8,18 @@ services:
       - "/dev/vchiq:/dev/vchiq"       # picamera1
       - "/dev/vcsm-cma:/dev/vcsm-cma" # picamera1
       - "/dev/i2c-1:/dev/i2c-1"       # I2C for PCA9685
+      - "/dev/input/js0:/dev/input/js0" #to use controller
+      - "/dev/mem:/dev/mem" #for use with encoder
+      - "/dev/ttyAMA0:/dev/ttyAMA0" #also encoder
+      - "/dev/gpiomem:/dev/gpiomem" #also encoder
     ports:
       - "80:8887"
       - "22:22"
+      - "8886:8886"
     volumes:
       - car_data:/root/car/data
       - car_model:/root/car/model
+    privileged: true #enabling privileged mode 
   tailscaled:
     image: tailscale/tailscale:v1.40.1
     network_mode: "host"

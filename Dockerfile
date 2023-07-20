@@ -95,14 +95,29 @@ RUN mkdir /var/run/sshd \
     && sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd \
     && mkdir /root/.ssh/ \
     && echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHnofKbghuYBeVxHxJiOfBsiSAiVMyRvlorSncmKyS8x shermanm@msh-laptop" >> /root/.ssh/authorized_keys \
-    && echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOBdIqKAcE2TrqWuDl1ThS5AW/cqmrIjBUk3gTDpGjH0 cc@mike-edgeracer-merif" >> /root/.ssh/authorized_keys
+    && echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOBdIqKAcE2TrqWuDl1ThS5AW/cqmrIjBUk3gTDpGjH0 cc@mike-edgeracer-merif" >> /root/.ssh/authorized_keys 
 
 EXPOSE 22
+
+# added on to try and get ssh to work
+RUN service ssh start
+CMD tail -f /dev/null
+
+# set up Jupyter on car
+RUN python3 -m pip install --upgrade pip && python3 -m pip install jupyter
+
+# generate config file and disable password
+RUN jupyter notebook --generate-config \
+    && echo "c.NotebookApp.token = ''" >> ~/.jupyter/jupyter_notebook_config.py \
+    && echo "c.NotebookApp.password = u''" >> ~/.jupyter/jupyter_notebook_config.py \
+    && echo "c.NotebookApp.open_browser = True" >> ~/.jupyter/jupyter_notebook_config.py \
+    && echo "c.NotebookApp.ip = 'localhost'" >> ~/.jupyter/jupyter_notebook_config.py 
+
+# add my public key to the car
+RUN echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKk6b50zh94P+CIw+SjhpweooabmE9WvAw17kGYEln5U williamfowler@fedora" >> /root/.ssh/authorized_keys
 
 # Start car in webui control mode
 # CMD python manage.py drive
 
 # Start SSH daemon for interactive use
 CMD ["/usr/sbin/sshd", "-D"]
-
-

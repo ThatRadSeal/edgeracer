@@ -82,11 +82,11 @@ PWM_STEERING_THROTTLE = {
     "PWM_THROTTLE_PIN": "PCA9685.1:40.1",   # PWM output pin for ESC
     "PWM_THROTTLE_SCALE": 1.0,              # used to compensate for PWM frequence differences from 60hz; NOT for increasing/limiting speed
     "PWM_THROTTLE_INVERTED": False,         # True if hardware requires an inverted PWM pulse
-    "STEERING_LEFT_PWM": 540,               #pwm value for full left steering
-    "STEERING_RIGHT_PWM": 260,              #pwm value for full right steering
-    "THROTTLE_FORWARD_PWM": 465,            #pwm value for max forward throttle
+    "STEERING_LEFT_PWM": 490,               #pwm value for full left steering
+    "STEERING_RIGHT_PWM": 330,              #pwm value for full right steering
+    "THROTTLE_FORWARD_PWM": 400,            #pwm value for max forward throttle
     "THROTTLE_STOPPED_PWM": 370,            #pwm value for no movement
-    "THROTTLE_REVERSE_PWM": 280,            #pwm value for max reverse throttle
+    "THROTTLE_REVERSE_PWM": 310,            #pwm value for max reverse throttle
 }
 
 # #ODOMETRY
@@ -95,7 +95,64 @@ PWM_STEERING_THROTTLE = {
 # MM_PER_TICK = 12.7625               # How much travel with a single tick, in mm. Roll you car a meter and divide total ticks measured by 1,000
 # ODOM_PIN = 13                        # if using GPIO, which GPIO board mode pin to use as input
 # ODOM_DEBUG = False                  # Write out values on vel and distance as it runs
+
+
 #
+# MEASURED ROBOT PROPERTIES
+#
+AXLE_LENGTH = 0.111     # length of axle; distance between left and right wheels in meters
+WHEEL_BASE = 0.1746       # distance between front and back wheels in meters
+WHEEL_RADIUS = 0.022225  # radius of wheel in meters
+MIN_SPEED = 0.1        # minimum speed in meters per second; speed below which car stalls
+MAX_SPEED = 3.0        # maximum speed in meters per second; speed at maximum throttle (1.0)
+MIN_THROTTLE = 0.1     # throttle (0 to 1.0) that corresponds to MIN_SPEED, throttle below which car stalls
+MAX_STEERING_ANGLE = 3.141592653589793 / 4  # for car-like robot; maximum steering angle in radians (corresponding to tire angle at steering == -1)
+
+#
+# ODOMETRY
+#
+HAVE_ODOM = True               # Do you have an odometer/encoder
+HAVE_ODOM_2 = False             # Do you have a second odometer/encoder as in a differential drive robot.
+                                # In this case, the 'first' encoder is the left wheel encoder and
+                                # the second encoder is the right wheel encoder.
+ENCODER_TYPE = 'GPIO'           # What kind of encoder? GPIO|arduino.
+                                # - 'GPIO' refers to direct connect of a single-channel encoder to an RPi/Jetson GPIO header pin.
+                                #   Set ODOM_PIN to the gpio pin, based on board numbering.
+                                # - 'arduino' generically refers to any microcontroller connected over a serial port.
+                                #   Set ODOM_SERIAL to the serial port that connects the microcontroller.
+                                #   See 'arduino/encoder/encoder.ino' for an Arduino sketch that implements both a continuous and
+                                #    on demand protocol for sending readings from the microcontroller to the host.
+ENCODER_PPR = 65.3                # encoder's pulses (ticks) per revolution of encoder shaft.
+ENCODER_DEBOUNCE_NS = 0         # nanoseconds to wait before integrating subsequence encoder pulses.
+                                # For encoders with noisy transitions, this can be used to reject extra interrupts caused by noise.
+                                # If necessary, the exact value can be determined using an oscilliscope or logic analyzer or
+                                # simply by experimenting with various values.
+FORWARD_ONLY = 1
+FORWARD_REVERSE = 2
+FORWARD_REVERSE_STOP = 3
+TACHOMETER_MODE=FORWARD_REVERSE # FORWARD_ONLY, FORWARD_REVERSE or FORWARD_REVERSE_STOP
+                                # For dual channel quadrature encoders, 'FORWARD_ONLY' is always the correct mode.
+                                # For single-channel encoders, the tachometer mode depends upon the application.
+                                # - FORWARD_ONLY always increments ticks; effectively assuming the car is always moving forward
+                                #   and always has a positive throttle. This is best for racing on wide open circuits where
+                                #   the car is always under throttle and where we are not trying to model driving backwards or stopping.
+                                # - FORWARD_REVERSE uses the throttle value to decide if the car is moving forward or reverse
+                                #   increments or decrements ticks accordingly.  In the case of a zero throttle, ticks will be
+                                #   incremented or decremented based on the last non-zero throttle; effectively modelling 'coasting'.
+                                #   This can work well in situations where the car will be making progress even when the throttle
+                                #   drops to zero.  For instance, in a race situatino where the car may coast to slow down but not
+                                #   actually stop.
+                                # - FORWARD_REVERSE_STOP uses the throttle value to decide if the car is moving forward or reverse or stopped.
+                                #   This works well for a slower moving robot in situations where the robot is changing direction; for instance4
+                                #   when doing SLAM, the robot will explore the room slowly and may need to backup.
+MM_PER_TICK = WHEEL_RADIUS * 2 * 3.141592653589793 * 1000 / ENCODER_PPR           # How much travel with a single encoder tick, in mm. Roll you car a meter and divide total ticks measured by 1,000
+ODOM_SERIAL = '/dev/ttyACM0'    # serial port when ENCODER_TYPE is 'arduino'
+ODOM_SERIAL_BAUDRATE = 115200   # baud rate for serial port encoder
+ODOM_PIN = "RPI_GPIO.BCM.13"                   # if using ENCODER_TYPE=GPIO, which GPIO board mode pin to use as input
+ODOM_PIN_2 = 14                 # GPIO for second encoder in differential drivetrains
+ODOM_SMOOTHING = 1              # number of odometer readings to use when calculating velocity
+ODOM_DEBUG = False              # Write out values on vel and distance as it runs
+
 # # #LIDAR
 # USE_LIDAR = False
 # LIDAR_TYPE = 'RP' #(RP|YD)

@@ -73,7 +73,7 @@ def drive(cfg, model_path=None, use_joystick=False, model_type=None,
             model_type = cfg.DEFAULT_MODEL_TYPE
 
     # Initialize car
-    V = dk.vehicle.Vehicle()
+    V = dk.vehicle.Vehicle(float(meta[0]))
 
     # Initialize logging before anything else to allow console logging
     if cfg.HAVE_CONSOLE_LOGGING:
